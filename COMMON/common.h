@@ -1,0 +1,10 @@
+//
+// Created by 14419 on 25-9-9.
+//
+
+#ifndef COMMON_H
+#define COMMON_H
+#include "oled.h"
+#include "font.h"
+#include "test.h"
+#endif //COMMON_H
