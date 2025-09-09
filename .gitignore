@@ -20,5 +20,4 @@ cmake/
 # clion 调试文件
 cmake-build-debug
 
-Core/Src/main.c
 test/
