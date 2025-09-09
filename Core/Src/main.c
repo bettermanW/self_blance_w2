@@ -89,7 +89,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C2_Init();
-  MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
   /* USER CODE END 2 */
@@ -98,12 +98,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_UART_Transmit(&huart2,(uint8_t*)"Hello World!\r\n",12,100);
+    //HAL_UART_Transmit(&huart1,(uint8_t*)"Hello World!\r\n",12,100);
+    printf("self_blance_2w\n");
     test_oled();
-    HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-    HAL_Delay(500);
-    HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-    HAL_Delay(500);
+    test_btn();
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
