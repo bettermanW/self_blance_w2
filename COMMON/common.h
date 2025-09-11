@@ -8,4 +8,6 @@
 #include "oled.h"
 #include "font.h"
 #include "test.h"
+#include "soft_i2c.h"
+#include "main.h"
 #endif //COMMON_H
