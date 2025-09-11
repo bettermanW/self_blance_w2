@@ -99,9 +99,9 @@ int main(void)
   while (1)
   {
     //HAL_UART_Transmit(&huart1,(uint8_t*)"Hello World!\r\n",12,100);
-    printf("self_blance_2w\n");
+    // printf("self_blance_2w\n");
     test_oled();
-    test_btn();
+    // test_btn();
 
 
     /* USER CODE END WHILE */
