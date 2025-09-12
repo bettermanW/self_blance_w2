@@ -92,15 +92,30 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
+  MPU6050_Init();
+  int16_t ace[3];
+  int16_t gro[3];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
+
+    AX_MPU6050_GetAccData(ace);
+    // AX_MPU6050_GetGyroData(gro);
+    // const float temp = AX_MPU6050_GetTempValue();
     //HAL_UART_Transmit(&huart1,(uint8_t*)"Hello World!\r\n",12,100);
-    // printf("self_blance_2w\n");
-    test_oled();
+    OLED_NewFrame();
+
+    OLED_PrintASCIIString(10, 10, (char* )ace[0], &afont8x6, 0);
+    OLED_PrintASCIIString(10, 20, (char* )ace[1], &afont8x6, 0);
+    OLED_PrintASCIIString(10, 30, (char* )ace[2], &afont8x6, 0);
+    OLED_DrawCircle(10, 10, 10, 0);
+
+    OLED_ShowFrame();
     // test_btn();
 
 
