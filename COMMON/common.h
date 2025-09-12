@@ -10,4 +10,5 @@
 #include "test.h"
 #include "soft_i2c.h"
 #include "main.h"
+#include "mpu6050.h"
 #endif //COMMON_H

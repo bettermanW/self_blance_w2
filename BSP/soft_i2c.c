@@ -72,7 +72,7 @@ uint8_t IIC_WaitAck(void)
     while(IIC_Read_SDA == GPIO_PIN_SET)  // 等待SDA被从机拉低（ACK）[6](@ref)
     {
         wait_time++;
-        if(wait_time > 250)
+        if(wait_time > 250) // 长时间不应答
         {
             IIC_Stop();
             return 1;  // 超时，返回NACK

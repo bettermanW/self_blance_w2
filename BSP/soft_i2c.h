@@ -5,7 +5,7 @@
 
 /* 引脚定义 (根据你的硬件连接修改) */
 #define SOFT_I2C_SCL_GPIO_PORT    GPIOB
-#define SOFT_I2C_SCL_PIN          GPIO_PIN_10
+#define SOFT_I2C_SCL_PIN          GPIO_PIN_12
 #define SOFT_I2C_SDA_GPIO_PORT    GPIOB
 #define SOFT_I2C_SDA_PIN          GPIO_PIN_11
 
