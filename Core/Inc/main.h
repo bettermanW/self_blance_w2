@@ -74,6 +74,22 @@ void Error_Handler(void);
 #define SOFT_6050_SDA_GPIO_Port GPIOA
 #define SOFT_6050_SCL_Pin GPIO_PIN_12
 #define SOFT_6050_SCL_GPIO_Port GPIOA
+#define MA_A_Pin GPIO_PIN_15
+#define MA_A_GPIO_Port GPIOA
+#define MA_B_Pin GPIO_PIN_3
+#define MA_B_GPIO_Port GPIOB
+#define MB_A_Pin GPIO_PIN_4
+#define MB_A_GPIO_Port GPIOB
+#define MB_B_Pin GPIO_PIN_5
+#define MB_B_GPIO_Port GPIOB
+#define MA_IN1_Pin GPIO_PIN_6
+#define MA_IN1_GPIO_Port GPIOB
+#define MA_IN2_Pin GPIO_PIN_7
+#define MA_IN2_GPIO_Port GPIOB
+#define MB_IN1_Pin GPIO_PIN_8
+#define MB_IN1_GPIO_Port GPIOB
+#define MB_IN2_Pin GPIO_PIN_9
+#define MB_IN2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

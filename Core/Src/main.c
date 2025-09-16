@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -90,11 +91,15 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   MX_USART1_UART_Init();
+  MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   OLED_Init();
   MPU6050_Init();
-  int16_t ace[3];
-  int16_t gro[3];
+
+
+  test_motor();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,19 +109,9 @@ int main(void)
 
 
 
-    AX_MPU6050_GetAccData(ace);
-    // AX_MPU6050_GetGyroData(gro);
-    // const float temp = AX_MPU6050_GetTempValue();
-    //HAL_UART_Transmit(&huart1,(uint8_t*)"Hello World!\r\n",12,100);
-    OLED_NewFrame();
 
-    OLED_PrintASCIIString(10, 10, (char* )ace[0], &afont8x6, 0);
-    OLED_PrintASCIIString(10, 20, (char* )ace[1], &afont8x6, 0);
-    OLED_PrintASCIIString(10, 30, (char* )ace[2], &afont8x6, 0);
-    OLED_DrawCircle(10, 10, 10, 0);
 
-    OLED_ShowFrame();
-    // test_btn();
+
 
 
     /* USER CODE END WHILE */
