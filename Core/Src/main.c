@@ -97,9 +97,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   OLED_Init();
   MPU6050_Init();
-
-
+  encoder_init();
   test_motor();
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,7 +109,7 @@ int main(void)
   {
 
 
-
+  test_encoder();
 
 
 
