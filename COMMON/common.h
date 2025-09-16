@@ -11,4 +11,5 @@
 #include "soft_i2c.h"
 #include "main.h"
 #include "mpu6050.h"
+#include "dr_motor.h"
 #endif //COMMON_H
