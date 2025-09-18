@@ -33,8 +33,10 @@
 #define MPU6050_PWR_MGMT2_REG		0X6C	//电源管理寄存器2
 
 #define MPU6050_INTBP_CFG_REG		0X37	//中断/旁路设置寄存器
+#define MPU6050_INT_EN_REG			0X38	//中断使能寄存器
 
 #define	MPU6050_ADDR    0x68    //MPU6050地址
+#define  AX_DLPF_ACC21_GYRO20   4 //加速度带宽21Hz 陀螺仪带宽20Hz
 
 void MPU6050_Init(void);
 
@@ -49,9 +51,11 @@ void AX_MPU6050_SetGyroSmplRate(uint16_t smplrate);
 void AX_MPU6050_SetDLPF(uint8_t bandwidth);
 
 float AX_MPU6050_GetTempValue(void);
-short int* AX_MPU6050_GetAccData(int16_t *pbuf);
+int16_t* AX_MPU6050_GetAccData(int16_t *pbuf);
 void AX_MPU6050_GetGyroData(int16_t *pbuf);
 
+void MPU6050_CheckInterruptStatus(void);
+uint8_t MPU6050_CheckConnection(void);
 
 
 #endif //MUP6050_H

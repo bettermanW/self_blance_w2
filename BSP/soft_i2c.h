@@ -4,10 +4,10 @@
 #include "common.h"
 
 /* 引脚定义 (根据你的硬件连接修改) */
-#define SOFT_I2C_SCL_GPIO_PORT    GPIOB
-#define SOFT_I2C_SCL_PIN          GPIO_PIN_12
-#define SOFT_I2C_SDA_GPIO_PORT    GPIOB
-#define SOFT_I2C_SDA_PIN          GPIO_PIN_11
+#define SOFT_I2C_SCL_GPIO_PORT    SOFT_6050_SCL_GPIO_Port
+#define SOFT_I2C_SCL_PIN          SOFT_6050_SCL_Pin
+#define SOFT_I2C_SDA_GPIO_PORT    SOFT_6050_SDA_GPIO_Port
+#define SOFT_I2C_SDA_PIN          SOFT_6050_SDA_Pin
 
 /* 电平操作宏 */
 #define IIC_SCL_Hi    HAL_GPIO_WritePin(SOFT_I2C_SCL_GPIO_PORT, SOFT_I2C_SCL_PIN, GPIO_PIN_SET)

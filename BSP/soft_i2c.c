@@ -35,9 +35,9 @@ void IIC_Start(void)
 {
     IIC_SDA_Hi;
     IIC_SCL_Hi;
-     us_delay(5);  // 短暂延 us_delay(5)时，可根据实际时序要求调整
+     us_delay(20);  // 短暂延 us_delay(20)时，可根据实际时序要求调整
     IIC_SDA_Low;   // START: SCL高电平期间，SDA从高变低[3,6](@ref)
-     us_delay(5);
+     us_delay(20);
     IIC_SCL_Low;   // 钳住I2C总线，准备发送或接收数据[6](@ref)
 }
 
@@ -49,11 +49,11 @@ void IIC_Stop(void)
 {
     IIC_SDA_Low;
     IIC_SCL_Low;
-     us_delay(5);
+     us_delay(20);
     IIC_SCL_Hi;
-     us_delay(5);
+     us_delay(20);
     IIC_SDA_Hi;    // STOP: SCL高电平期间，SDA从低变高[3,6](@ref)
-     us_delay(5);
+     us_delay(20);
 }
 
 /**
@@ -67,7 +67,7 @@ uint8_t IIC_WaitAck(void)
     
     IIC_SDA_Hi;  // 主机释放SDA线[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(5);
+     us_delay(20);
     
     while(IIC_Read_SDA == GPIO_PIN_SET)  // 等待SDA被从机拉低（ACK）[6](@ref)
     {
@@ -77,11 +77,11 @@ uint8_t IIC_WaitAck(void)
             IIC_Stop();
             return 1;  // 超时，返回NACK
         }
-         us_delay(5);
+         us_delay(20);
     }
     
     IIC_SCL_Low;
-     us_delay(5);
+     us_delay(20);
     
     return 0;  // 收到ACK
 }
@@ -93,9 +93,9 @@ void IIC_SendAck(void)
 {
     IIC_SDA_Low;  // SDA拉低表示ACK[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(5);
+     us_delay(20);
     IIC_SCL_Low;
-     us_delay(5);
+     us_delay(20);
 }
 
 /**
@@ -105,9 +105,9 @@ void IIC_SendNAck(void)
 {
     IIC_SDA_Hi;  // SDA保持高电平表示NACK[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(5);
+     us_delay(20);
     IIC_SCL_Low;
-     us_delay(5);
+     us_delay(20);
 }
 
 /**
@@ -119,7 +119,7 @@ void IIC_SendByte(uint8_t data)
     for(uint8_t i = 0; i < 8; i++)
     {
         IIC_SCL_Low;
-         us_delay(5);
+         us_delay(20);
         
         /* 准备数据位 */
         if(data & 0x80)
@@ -128,10 +128,10 @@ void IIC_SendByte(uint8_t data)
             IIC_SDA_Low;
         
         data <<= 1;
-         us_delay(5);
+         us_delay(20);
         
         IIC_SCL_Hi;  // 拉高SCL，从机采样数据位[3](@ref)
-         us_delay(5);
+         us_delay(20);
     }
     
     IIC_SCL_Low;
@@ -152,9 +152,9 @@ uint8_t IIC_ReadByte(uint8_t ack)
     {
         receive <<= 1;
         IIC_SCL_Low;
-         us_delay(5);
+         us_delay(20);
         IIC_SCL_Hi;
-         us_delay(5);
+         us_delay(20);
         
         if(IIC_Read_SDA)
             receive |= 0x01;
@@ -217,18 +217,21 @@ HAL_StatusTypeDef MY_I2C_Master_Transmit(uint16_t DevAddress, const uint8_t *pDa
     return HAL_OK; // 传输成功
 }
 
+// -------------------- 扫描函数 --------------------
 void I2C_Scan(void)
 {
+    printf("🔍 Start I2C Scan...\r\n");
     for(uint8_t addr = 1; addr < 127; addr++)
     {
         IIC_Start();
-        IIC_SendByte(addr << 1);
-        if(IIC_WaitAck() == 0)
+        IIC_SendByte(addr << 1);  // 发送写方向
+        if(IIC_WaitAck() == 0)    // 收到ACK
         {
-            printf("Device found at: 0x%02X\n", addr);
+            printf("✅ Device found at: 0x%02X\r\n", addr);
         }
         IIC_Stop();
-        HAL_Delay(100);
+        HAL_Delay(5);  // 延时避免太快
     }
+    printf("🔍 Scan Done.\r\n");
 }
 
