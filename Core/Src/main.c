@@ -96,6 +96,7 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start(&htim5);  // 开启定时器
   OLED_Init();
   MPU6050_Init();
   encoder_init();
@@ -104,7 +105,7 @@ int main(void)
   // I2C_Scan();
   // MPU6050_CheckInterruptStatus();
   // printf("%d", MPU6050_CheckConnection());
-  test_us_delay_software();
+
 
   /* USER CODE END 2 */
 
@@ -113,7 +114,7 @@ int main(void)
   while (1)
   {
 
-
+    test_led();
 
 
 

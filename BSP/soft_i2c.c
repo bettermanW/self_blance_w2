@@ -168,6 +168,18 @@ uint8_t IIC_ReadByte(uint8_t ack)
     return receive;
 }
 
+
+/**
+ * @brief  微秒级延时函数
+ * @param  us: 延时的微秒数
+ */
+void us_delay(uint32_t us)
+{
+    __HAL_TIM_SET_COUNTER(&htim5, 0);  // 步骤1：重置定时器计数器
+    while (__HAL_TIM_GET_COUNTER(&htim5) < us); // 步骤2：等待计数器达到目标值
+}
+
+/***************************测试函数***************************/
 /**
   * @brief  模拟HAL_I2C_Master_Transmit函数，通过软件IIC发送数据
   * @param  DevAddress: 目标从设备地址（7位地址，函数内部会左移1位并添加写标志）
@@ -220,15 +232,3 @@ void I2C_Scan(void)
     }
 }
 
-/**
- * @brief  微秒级延时函数
- * @param  us: 延时的微秒数
- */
-void us_delay(uint32_t us)
-{
-    uint32_t ticks = us * (SystemCoreClock / 1000000) / 20;
-    for(uint32_t i = 0; i < ticks; i++)
-    {
-        __NOP();
-    }
-}
