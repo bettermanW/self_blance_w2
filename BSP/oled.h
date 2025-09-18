@@ -4,6 +4,7 @@
 #include "font.h"
 #include "main.h"
 #include "string.h"
+#include "common.h"
 
 typedef enum {
   OLED_COLOR_NORMAL = 0, // 正常模式 黑底白字

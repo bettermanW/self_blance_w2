@@ -26,6 +26,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+
 // OLED器件地址
 #define OLED_ADDRESS 0x78
 
@@ -48,6 +49,7 @@ uint8_t OLED_GRAM[OLED_PAGE][OLED_COLUMN];
  */
 void OLED_Send(uint8_t *data, uint8_t len) {
   HAL_I2C_Master_Transmit(&hi2c2, OLED_ADDRESS, data, len, HAL_MAX_DELAY);
+  // MY_I2C_Master_Transmit(OLED_ADDRESS, data, len);
 }
 
 /**
