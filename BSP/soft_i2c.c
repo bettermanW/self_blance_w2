@@ -1,5 +1,5 @@
 #include "soft_i2c.h"
-
+#include "main.h"
 // /**
 //  * @brief  初始化IIC的GPIO
 //  * @note   PB10, PB11 设置为开漏输出，并默认拉高
@@ -35,9 +35,9 @@ void IIC_Start(void)
 {
     IIC_SDA_Hi;
     IIC_SCL_Hi;
-     us_delay(20);  // 短暂延 us_delay(20)时，可根据实际时序要求调整
+     us_delay(2);  // 短暂延 us_delay(2)时，可根据实际时序要求调整
     IIC_SDA_Low;   // START: SCL高电平期间，SDA从高变低[3,6](@ref)
-     us_delay(20);
+     us_delay(2);
     IIC_SCL_Low;   // 钳住I2C总线，准备发送或接收数据[6](@ref)
 }
 
@@ -49,11 +49,11 @@ void IIC_Stop(void)
 {
     IIC_SDA_Low;
     IIC_SCL_Low;
-     us_delay(20);
+     us_delay(2);
     IIC_SCL_Hi;
-     us_delay(20);
+     us_delay(2);
     IIC_SDA_Hi;    // STOP: SCL高电平期间，SDA从低变高[3,6](@ref)
-     us_delay(20);
+     us_delay(2);
 }
 
 /**
@@ -64,10 +64,10 @@ void IIC_Stop(void)
 uint8_t IIC_WaitAck(void)
 {
     uint8_t wait_time = 0;
-    
+
     IIC_SDA_Hi;  // 主机释放SDA线[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(20);
+     us_delay(2);
     
     while(IIC_Read_SDA == GPIO_PIN_SET)  // 等待SDA被从机拉低（ACK）[6](@ref)
     {
@@ -77,11 +77,11 @@ uint8_t IIC_WaitAck(void)
             IIC_Stop();
             return 1;  // 超时，返回NACK
         }
-         us_delay(20);
+         us_delay(2);
     }
     
     IIC_SCL_Low;
-     us_delay(20);
+     us_delay(2);
     
     return 0;  // 收到ACK
 }
@@ -93,9 +93,9 @@ void IIC_SendAck(void)
 {
     IIC_SDA_Low;  // SDA拉低表示ACK[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(20);
+     us_delay(2);
     IIC_SCL_Low;
-     us_delay(20);
+     us_delay(2);
 }
 
 /**
@@ -105,9 +105,9 @@ void IIC_SendNAck(void)
 {
     IIC_SDA_Hi;  // SDA保持高电平表示NACK[6,7](@ref)
     IIC_SCL_Hi;
-     us_delay(20);
+     us_delay(2);
     IIC_SCL_Low;
-     us_delay(20);
+     us_delay(2);
 }
 
 /**
@@ -119,21 +119,21 @@ void IIC_SendByte(uint8_t data)
     for(uint8_t i = 0; i < 8; i++)
     {
         IIC_SCL_Low;
-         us_delay(20);
-        
+         us_delay(2);
+
         /* 准备数据位 */
         if(data & 0x80)
             IIC_SDA_Hi;
         else
             IIC_SDA_Low;
-        
+
         data <<= 1;
-         us_delay(20);
-        
+         us_delay(2);
+
         IIC_SCL_Hi;  // 拉高SCL，从机采样数据位[3](@ref)
-         us_delay(20);
+         us_delay(2);
     }
-    
+
     IIC_SCL_Low;
 }
 
@@ -142,29 +142,38 @@ void IIC_SendByte(uint8_t data)
  * @param  ack: 是否发送ACK (0:发送ACK, 1:发送NACK)
  * @retval 读取到的字节
  */
-uint8_t IIC_ReadByte(uint8_t ack)
-{
+uint8_t IIC_ReadByte(uint8_t ack) {
     uint8_t receive = 0;
-    
-    IIC_SDA_Hi;  // 主机释放SDA线
-    
-    for(uint8_t i = 0; i < 8; i++)
-    {
+
+    // 将 SDA 切换为输入模式
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = SOFT_6050_SDA_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(SOFT_6050_SDA_GPIO_Port, &GPIO_InitStruct);
+
+    for (uint8_t i = 0; i < 8; i++) {
         receive <<= 1;
         IIC_SCL_Low;
-         us_delay(20);
+        us_delay(2);
         IIC_SCL_Hi;
-         us_delay(20);
-        
-        if(IIC_Read_SDA)
+        us_delay(1); // 在 SCL 高电平中间采样
+        if (IIC_Read_SDA == GPIO_PIN_SET)
             receive |= 0x01;
+        us_delay(1);
     }
-    
-    if(ack)
+    IIC_SCL_Low;
+    us_delay(2);
+
+    // 切换回输出模式以发送 ACK/NACK
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+    HAL_GPIO_Init(SOFT_6050_SDA_GPIO_Port, &GPIO_InitStruct);
+
+    if (ack)
         IIC_SendAck();
     else
         IIC_SendNAck();
-    
+
     return receive;
 }
 
