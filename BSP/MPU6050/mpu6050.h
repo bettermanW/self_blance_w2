@@ -51,8 +51,10 @@ void AX_MPU6050_SetGyroSmplRate(uint16_t smplrate);
 void AX_MPU6050_SetDLPF(uint8_t bandwidth);
 
 float AX_MPU6050_GetTempValue(void);
-int16_t* AX_MPU6050_GetAccData(int16_t *pbuf);
+void AX_MPU6050_GetAccData(int16_t *pbuf);
+void AX_MPU6050_GetAccData_Safe(int16_t *pbuf);
 void AX_MPU6050_GetGyroData(int16_t *pbuf);
+void AX_MPU6050_GetGyroData_Safe(int16_t *pbuf);
 
 void MPU6050_CheckInterruptStatus(void);
 uint8_t MPU6050_CheckConnection(void);
