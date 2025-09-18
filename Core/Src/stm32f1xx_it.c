@@ -205,12 +205,10 @@ void SysTick_Handler(void)
 void EXTI9_5_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
-  //IMU数据
 
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(interrupt_6050_Pin);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
-  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
 
   /* USER CODE END EXTI9_5_IRQn 1 */
 }
