@@ -100,11 +100,10 @@ int main(void)
   OLED_Init();
   MPU6050_Init();
   encoder_init();
+  // MPU6050_CheckConnection();
   // test_motor();
 
-  // I2C_Scan();
-  // MPU6050_CheckInterruptStatus();
-  // printf("%d", MPU6050_CheckConnection());
+
 
 
   /* USER CODE END 2 */
@@ -114,11 +113,7 @@ int main(void)
   while (1)
   {
 
-    test_led();
-
-
-
-
+    mpu_6050_data_ready();
 
     /* USER CODE END WHILE */
 
